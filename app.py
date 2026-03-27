@@ -415,16 +415,22 @@ st.set_page_config(
 # Custom CSS
 st.markdown("""
     <style>
+    @import url('https://fonts.cdnfonts.com/css/futura-md-bt');
+    html, body, [class*="css"] {
+        font-family: 'Futura Medium', 'Futura Md BT', 'Futura', sans-serif;
+    }
     .main-header {
         font-size: 2.5rem;
         font-weight: 700;
         color: #1f77b4;
         margin-bottom: 0.5rem;
+        font-family: 'Futura Medium', 'Futura', sans-serif;
     }
     .sub-header {
         font-size: 1.2rem;
         color: #666;
         margin-bottom: 2rem;
+        font-family: 'Futura Medium', 'Futura', sans-serif;
     }
     .result-box {
         background-color: #f0f2f6;
@@ -438,6 +444,22 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
+
+
+# Global Plotly theme
+PLOT_FONT = dict(family="Futura Medium, Futura, sans-serif", size=12, color="#333")
+AXIS_STYLE = dict(
+    showgrid=True, gridcolor="#ddd", gridwidth=1,
+    ticks="outside", ticklen=5, tickwidth=1.5, tickcolor="#333",
+    showline=True, linecolor="#333", linewidth=1.5, mirror="allticks",
+    title_font=dict(size=13),
+)
+LAYOUT_STYLE = dict(
+    font=PLOT_FONT,
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+    margin=dict(t=50, b=10),
+)
 
 
 def user_guide_and_background():
@@ -1174,14 +1196,14 @@ def pressure_profile():
                 # Pressure plot
                 fig.add_trace(
                     go.Scatter(x=pressures, y=depths, mode='lines', name='Pressure',
-                              line=dict(color='#1f77b4', width=3)),
+                              line=dict(color='#1f77b4', width=2.5)),
                     row=1, col=1
                 )
                 
                 # Z-factor plot
                 fig.add_trace(
                     go.Scatter(x=z_factors, y=depths, mode='lines', name='Z-factor',
-                              line=dict(color='#ff7f0e', width=3)),
+                              line=dict(color='#ff7f0e', width=2.5)),
                     row=1, col=2
                 )
                 
@@ -1191,10 +1213,9 @@ def pressure_profile():
                 fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=1)
                 fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=2)
                 
-                fig.update_layout(height=600, showlegend=False,
-                                  margin=dict(t=40))
-                fig.update_xaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
-                fig.update_yaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
+                fig.update_layout(height=600, showlegend=False, **LAYOUT_STYLE)
+                fig.update_xaxes(**AXIS_STYLE)
+                fig.update_yaxes(**AXIS_STYLE)
                 
                 st.plotly_chart(fig, use_container_width=True)
                 
@@ -1452,9 +1473,8 @@ def complete_pvt_table():
                     x_valid, y_valid = filter_valid(results["Pressure"], results["z"])
                     fig.add_trace(
                         go.Scatter(x=x_valid, y=y_valid, 
-                                  mode='lines+markers', name=temp_label,
-                                  line=dict(color=color, width=2),
-                                  marker=dict(size=4),
+                                  mode='lines', name=temp_label,
+                                  line=dict(color=color, width=2.5),
                                   showlegend=show_legend,
                                   legendgroup=temp_label),
                         row=1, col=1
@@ -1464,9 +1484,8 @@ def complete_pvt_table():
                     x_valid, y_valid = filter_valid(results["Pressure"], results["Bg"])
                     fig.add_trace(
                         go.Scatter(x=x_valid, y=y_valid, 
-                                  mode='lines+markers', name=temp_label,
-                                  line=dict(color=color, width=2),
-                                  marker=dict(size=4),
+                                  mode='lines', name=temp_label,
+                                  line=dict(color=color, width=2.5),
                                   showlegend=False,
                                   legendgroup=temp_label),
                         row=1, col=2
@@ -1476,9 +1495,8 @@ def complete_pvt_table():
                     x_valid, y_valid = filter_valid(results["Pressure"], results["Mug"])
                     fig.add_trace(
                         go.Scatter(x=x_valid, y=y_valid, 
-                                  mode='lines+markers', name=temp_label,
-                                  line=dict(color=color, width=2),
-                                  marker=dict(size=4),
+                                  mode='lines', name=temp_label,
+                                  line=dict(color=color, width=2.5),
                                   showlegend=False,
                                   legendgroup=temp_label),
                         row=1, col=3
@@ -1488,9 +1506,8 @@ def complete_pvt_table():
                     x_valid, y_valid = filter_valid(results["Pressure"], results["WtrInGas"])
                     fig.add_trace(
                         go.Scatter(x=x_valid, y=y_valid, 
-                                  mode='lines+markers', name=temp_label,
-                                  line=dict(color=color, width=2),
-                                  marker=dict(size=4),
+                                  mode='lines', name=temp_label,
+                                  line=dict(color=color, width=2.5),
                                   showlegend=False,
                                   legendgroup=temp_label),
                         row=2, col=1
@@ -1500,9 +1517,8 @@ def complete_pvt_table():
                     x_valid, y_valid = filter_valid(results["Pressure"], results["GasGrad"])
                     fig.add_trace(
                         go.Scatter(x=x_valid, y=y_valid, 
-                                  mode='lines+markers', name=temp_label,
-                                  line=dict(color=color, width=2),
-                                  marker=dict(size=4),
+                                  mode='lines', name=temp_label,
+                                  line=dict(color=color, width=2.5),
                                   showlegend=False,
                                   legendgroup=temp_label),
                         row=2, col=2
@@ -1512,9 +1528,8 @@ def complete_pvt_table():
                     x_valid, y_valid = filter_valid(results["Pressure"], results["m(p)"])
                     fig.add_trace(
                         go.Scatter(x=x_valid, y=y_valid, 
-                                  mode='lines+markers', name=temp_label,
-                                  line=dict(color=color, width=2),
-                                  marker=dict(size=4),
+                                  mode='lines', name=temp_label,
+                                  line=dict(color=color, width=2.5),
                                   showlegend=False,
                                   legendgroup=temp_label),
                         row=2, col=3
@@ -1533,9 +1548,9 @@ def complete_pvt_table():
                 fig.update_yaxes(title_text="psia²/cP", row=2, col=3)
                 
                 fig.update_layout(height=800, showlegend=len(all_results) > 1,
-                                  margin=dict(t=40))
-                fig.update_xaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
-                fig.update_yaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
+                                  **LAYOUT_STYLE)
+                fig.update_xaxes(**AXIS_STYLE)
+                fig.update_yaxes(**AXIS_STYLE)
                 
                 st.plotly_chart(fig, use_container_width=True)
                 

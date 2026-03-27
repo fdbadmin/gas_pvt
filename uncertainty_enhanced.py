@@ -12,6 +12,21 @@ from plotly.subplots import make_subplots
 from scipy import stats
 
 
+# Shared Plotly theme
+_FONT = dict(family="Futura Medium, Futura, sans-serif", size=12, color="#333")
+_AXIS = dict(
+    showgrid=True, gridcolor="#ddd", gridwidth=1,
+    ticks="outside", ticklen=5, tickwidth=1.5, tickcolor="#333",
+    showline=True, linecolor="#333", linewidth=1.5, mirror="allticks",
+    title_font=dict(size=13),
+)
+_LAYOUT = dict(
+    font=_FONT,
+    plot_bgcolor="white",
+    paper_bgcolor="white",
+)
+
+
 def generate_samples(mean: float, std: float, n: int, dist_type: str = "normal") -> np.ndarray:
     """
     Generate random samples from a specified distribution.
@@ -103,9 +118,9 @@ def create_box_plots(data_dict: dict, labels: list) -> go.Figure:
             row=r, col=c
         )
 
-    fig.update_layout(height=350 * rows, title_text="Distribution Box Plots")
-    fig.update_xaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
-    fig.update_yaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
+    fig.update_layout(height=350 * rows, title_text="Distribution Box Plots", **_LAYOUT)
+    fig.update_xaxes(**_AXIS)
+    fig.update_yaxes(**_AXIS)
     return fig
 
 
@@ -142,10 +157,11 @@ def create_tornado_chart(sensitivity_df: pd.DataFrame, output_name: str,
         xaxis_title="Rank Correlation",
         yaxis_title="Input Parameter",
         height=50 * top_n + 200,
-        xaxis=dict(range=[-1.05, 1.05])
+        xaxis=dict(range=[-1.05, 1.05]),
+        **_LAYOUT
     )
-    fig.update_xaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
-    fig.update_yaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
+    fig.update_xaxes(**_AXIS)
+    fig.update_yaxes(**_AXIS)
     return fig
 
 
@@ -176,7 +192,7 @@ def create_distribution_plot_with_cdf(data: np.ndarray, title: str,
     cdf = np.arange(1, len(sorted_data) + 1) / len(sorted_data)
     fig.add_trace(
         go.Scatter(x=sorted_data, y=cdf, mode="lines", name="CDF",
-                   line=dict(color="#ff7f0e", width=2)),
+                   line=dict(color="#ff7f0e", width=2.5)),
         secondary_y=True
     )
 
@@ -186,9 +202,10 @@ def create_distribution_plot_with_cdf(data: np.ndarray, title: str,
         fig.add_vline(x=val, line_dash="dash", line_color="gray",
                       annotation_text=f"{label}={val:.4g}")
 
-    fig.update_layout(title=title, height=400, bargap=0.05)
-    fig.update_xaxes(title_text=title, showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
-    fig.update_yaxes(title_text="Frequency", secondary_y=False, showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
+    fig.update_layout(title=title, height=400, bargap=0.05, **_LAYOUT)
+    fig.update_xaxes(title_text=title, **_AXIS)
+    fig.update_yaxes(title_text="Frequency", secondary_y=False, **_AXIS)
     fig.update_yaxes(title_text="Cumulative Probability", secondary_y=True,
-                     range=[0, 1.05], ticks="outside", showline=True, linecolor="black")
+                     range=[0, 1.05], ticks="outside", showline=True,
+                     linecolor="#333", linewidth=1.5)
     return fig
