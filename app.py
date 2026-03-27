@@ -458,7 +458,7 @@ LAYOUT_STYLE = dict(
     font=PLOT_FONT,
     plot_bgcolor="white",
     paper_bgcolor="white",
-    margin=dict(t=50, b=10),
+    margin=dict(t=60, b=10),
 )
 
 
@@ -1126,7 +1126,7 @@ def pressure_profile():
     pressure_unit, temperature_unit = get_user_units()
     st.info(f"📏 **Current Units:** Pressure = {pressure_unit}, Temperature = {temperature_unit} (Change in sidebar)")
     
-    col1, col2 = st.columns([1, 2])
+    col1, col2 = st.columns([1, 3])
     
     with col1:
         st.subheader("Input Parameters")
@@ -1190,7 +1190,7 @@ def pressure_profile():
                 fig = make_subplots(
                     rows=1, cols=2,
                     subplot_titles=("Pressure vs Depth", "Z-factor vs Depth"),
-                    horizontal_spacing=0.12
+                    horizontal_spacing=0.15
                 )
                 
                 # Pressure plot
@@ -1214,6 +1214,9 @@ def pressure_profile():
                 fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=2)
                 
                 fig.update_layout(height=600, showlegend=False, **LAYOUT_STYLE)
+                for ann in fig.layout.annotations:
+                    ann.y = ann.y + 0.04
+                    ann.font = dict(size=14, family="Futura Medium, Futura, sans-serif", color="#333")
                 fig.update_xaxes(**AXIS_STYLE)
                 fig.update_yaxes(**AXIS_STYLE)
                 
@@ -1251,7 +1254,7 @@ def complete_pvt_table():
     pressure_unit, temperature_unit = get_user_units()
     st.info(f"📏 **Current Units:** Pressure = {pressure_unit}, Temperature = {temperature_unit} (Change in sidebar)")
     
-    col1, col2 = st.columns([1, 2])
+    col1, col2 = st.columns([1, 3])
     
     with col1:
         st.subheader("Input Parameters")
@@ -1451,8 +1454,8 @@ def complete_pvt_table():
                     rows=2, cols=3,
                     subplot_titles=("Z-factor vs P", "Bg vs P", "Gas Viscosity vs P", 
                                   "Water in Gas", "Gas Gradient", "m(p) vs P"),
-                    vertical_spacing=0.18,
-                    horizontal_spacing=0.12
+                    vertical_spacing=0.22,
+                    horizontal_spacing=0.14
                 )
                 
                 # Helper function to filter out NaN and inf values
@@ -1547,8 +1550,12 @@ def complete_pvt_table():
                 fig.update_yaxes(title_text="psi/ft", row=2, col=2)
                 fig.update_yaxes(title_text="psia²/cP", row=2, col=3)
                 
-                fig.update_layout(height=800, showlegend=len(all_results) > 1,
+                fig.update_layout(height=1000, showlegend=len(all_results) > 1,
                                   **LAYOUT_STYLE)
+                # Shift subplot titles up so they don't overlap borders
+                for ann in fig.layout.annotations:
+                    ann.y = ann.y + 0.03
+                    ann.font = dict(size=14, family="Futura Medium, Futura, sans-serif", color="#333")
                 fig.update_xaxes(**AXIS_STYLE)
                 fig.update_yaxes(**AXIS_STYLE)
                 
@@ -1814,7 +1821,7 @@ def uncertainty_analysis():
     pressure_unit, temperature_unit = get_user_units()
     st.info(f"📏 **Current Units:** Pressure = {pressure_unit}, Temperature = {temperature_unit} (Change in sidebar)")
     
-    col1, col2 = st.columns([1, 2])
+    col1, col2 = st.columns([1, 3])
     
     with col1:
         st.subheader("Input Parameters")
