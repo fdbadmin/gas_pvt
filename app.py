@@ -1269,7 +1269,8 @@ def pressure_profile():
                 fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=1)
                 fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=2)
                 
-                fig.update_layout(height=450, showlegend=False, **LAYOUT_STYLE)
+                layout_with_margin = {**LAYOUT_STYLE, "margin": dict(t=60, b=10, r=40)}
+                fig.update_layout(height=450, showlegend=False, **layout_with_margin)
                 for ann in fig.layout.annotations:
                     ann.y = ann.y + 0.04
                     ann.font = dict(size=14, family="Futura Medium, Futura, sans-serif", color="#333")
@@ -1605,8 +1606,9 @@ def complete_pvt_table():
                 fig.update_yaxes(title_text="psi/ft", row=2, col=2)
                 fig.update_yaxes(title_text="psia²/cP", row=2, col=3)
                 
+                pvt_layout = {**LAYOUT_STYLE, "margin": dict(t=60, b=10, r=40)}
                 fig.update_layout(height=750, showlegend=len(all_results) > 1,
-                                  **LAYOUT_STYLE)
+                                  **pvt_layout)
                 # Shift subplot titles up so they don't overlap borders
                 for ann in fig.layout.annotations:
                     ann.y = ann.y + 0.03
