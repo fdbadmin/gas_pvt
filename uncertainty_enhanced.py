@@ -104,6 +104,8 @@ def create_box_plots(data_dict: dict, labels: list) -> go.Figure:
         )
 
     fig.update_layout(height=350 * rows, title_text="Distribution Box Plots")
+    fig.update_xaxes(showgrid=True, gridcolor="lightgray")
+    fig.update_yaxes(showgrid=True, gridcolor="lightgray")
     return fig
 
 
@@ -142,6 +144,8 @@ def create_tornado_chart(sensitivity_df: pd.DataFrame, output_name: str,
         height=50 * top_n + 200,
         xaxis=dict(range=[-1.05, 1.05])
     )
+    fig.update_xaxes(showgrid=True, gridcolor="lightgray")
+    fig.update_yaxes(showgrid=True, gridcolor="lightgray")
     return fig
 
 
@@ -183,8 +187,8 @@ def create_distribution_plot_with_cdf(data: np.ndarray, title: str,
                       annotation_text=f"{label}={val:.4g}")
 
     fig.update_layout(title=title, height=400, bargap=0.05)
-    fig.update_xaxes(title_text=title)
-    fig.update_yaxes(title_text="Frequency", secondary_y=False)
+    fig.update_xaxes(title_text=title, showgrid=True, gridcolor="lightgray")
+    fig.update_yaxes(title_text="Frequency", secondary_y=False, showgrid=True, gridcolor="lightgray")
     fig.update_yaxes(title_text="Cumulative Probability", secondary_y=True,
                      range=[0, 1.05])
     return fig
