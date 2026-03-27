@@ -1191,9 +1191,10 @@ def pressure_profile():
                 fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=1)
                 fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=2)
                 
-                fig.update_layout(height=600, showlegend=False)
-                fig.update_xaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror=True)
-                fig.update_yaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror=True)
+                fig.update_layout(height=600, showlegend=False,
+                                  margin=dict(t=40))
+                fig.update_xaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
+                fig.update_yaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
                 
                 st.plotly_chart(fig, use_container_width=True)
                 
@@ -1429,8 +1430,8 @@ def complete_pvt_table():
                     rows=2, cols=3,
                     subplot_titles=("Z-factor vs P", "Bg vs P", "Gas Viscosity vs P", 
                                   "Water in Gas", "Gas Gradient", "m(p) vs P"),
-                    vertical_spacing=0.12,
-                    horizontal_spacing=0.08
+                    vertical_spacing=0.18,
+                    horizontal_spacing=0.12
                 )
                 
                 # Helper function to filter out NaN and inf values
@@ -1531,9 +1532,10 @@ def complete_pvt_table():
                 fig.update_yaxes(title_text="psi/ft", row=2, col=2)
                 fig.update_yaxes(title_text="psia²/cP", row=2, col=3)
                 
-                fig.update_layout(height=700, showlegend=len(all_results) > 1)
-                fig.update_xaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror=True)
-                fig.update_yaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror=True)
+                fig.update_layout(height=800, showlegend=len(all_results) > 1,
+                                  margin=dict(t=40))
+                fig.update_xaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
+                fig.update_yaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror="allticks")
                 
                 st.plotly_chart(fig, use_container_width=True)
                 
