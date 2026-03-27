@@ -1192,8 +1192,8 @@ def pressure_profile():
                 fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=2)
                 
                 fig.update_layout(height=600, showlegend=False)
-                fig.update_xaxes(showgrid=True, gridcolor="lightgray")
-                fig.update_yaxes(showgrid=True, gridcolor="lightgray")
+                fig.update_xaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror=True)
+                fig.update_yaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror=True)
                 
                 st.plotly_chart(fig, use_container_width=True)
                 
@@ -1532,8 +1532,8 @@ def complete_pvt_table():
                 fig.update_yaxes(title_text="psia²/cP", row=2, col=3)
                 
                 fig.update_layout(height=700, showlegend=len(all_results) > 1)
-                fig.update_xaxes(showgrid=True, gridcolor="lightgray")
-                fig.update_yaxes(showgrid=True, gridcolor="lightgray")
+                fig.update_xaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror=True)
+                fig.update_yaxes(showgrid=True, gridcolor="lightgray", ticks="outside", showline=True, linecolor="black", mirror=True)
                 
                 st.plotly_chart(fig, use_container_width=True)
                 
