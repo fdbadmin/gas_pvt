@@ -12,12 +12,15 @@ from plotly.subplots import make_subplots
 from scipy import stats
 
 
-# Shared Plotly theme
-_FONT = dict(family="Futura Medium, Futura, sans-serif", size=12, color="#333")
+# Shared Plotly theme – Shell palette
+_SHELL_RED = "#DD1D21"
+_SHELL_YELLOW = "#FBCE07"
+_SHELL_DARK = "#333333"
+_FONT = dict(family="Futura Medium, Futura, sans-serif", size=12, color=_SHELL_DARK)
 _AXIS = dict(
-    showgrid=True, gridcolor="#ddd", gridwidth=1,
-    ticks="outside", ticklen=5, tickwidth=1.5, tickcolor="#333",
-    showline=True, linecolor="#333", linewidth=1.5, mirror="allticks",
+    showgrid=True, gridcolor="#e0e0e0", gridwidth=1,
+    ticks="outside", ticklen=5, tickwidth=1.5, tickcolor=_SHELL_DARK,
+    showline=True, linecolor=_SHELL_DARK, linewidth=1.5, mirror="allticks",
     title_font=dict(size=13),
 )
 _LAYOUT = dict(
@@ -113,7 +116,7 @@ def create_box_plots(data_dict: dict, labels: list) -> go.Figure:
         c = idx % cols + 1
         vals = data_dict[label]
         fig.add_trace(
-            go.Box(y=vals, name=label, marker_color="#1f77b4",
+            go.Box(y=vals, name=label, marker_color=_SHELL_RED,
                    boxmean='sd', showlegend=False),
             row=r, col=c
         )
@@ -141,7 +144,7 @@ def create_tornado_chart(sensitivity_df: pd.DataFrame, output_name: str,
     subset = sensitivity_df[sensitivity_df["Output"] == output_name].copy()
     subset = subset.sort_values("Impact", ascending=True).tail(top_n)
 
-    colors = ["#d62728" if c < 0 else "#2ca02c" for c in subset["Correlation"]]
+    colors = [_SHELL_RED if c < 0 else "#009639" for c in subset["Correlation"]]
 
     fig = go.Figure(go.Bar(
         x=subset["Correlation"],
@@ -183,7 +186,7 @@ def create_distribution_plot_with_cdf(data: np.ndarray, title: str,
     # Histogram
     fig.add_trace(
         go.Histogram(x=data, nbinsx=n_bins, name="Frequency",
-                     marker_color="#1f77b4", opacity=0.7),
+                     marker_color=_SHELL_RED, opacity=0.7),
         secondary_y=False
     )
 

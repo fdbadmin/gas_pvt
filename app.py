@@ -406,52 +406,86 @@ def display_interpretation_flags(flags, severity):
 
 # Page configuration
 st.set_page_config(
-    page_title="Gas PVT Analysis",
-    page_icon="⛽",
+    page_title="Shell Gas PVT Analysis",
+    page_icon="🐚",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # Custom CSS
-st.markdown("""
+SHELL_RED = "#DD1D21"
+SHELL_YELLOW = "#FBCE07"
+SHELL_DARK = "#333333"
+
+st.markdown(f"""
     <style>
     @import url('https://fonts.cdnfonts.com/css/futura-md-bt');
-    html, body, [class*="css"] {
+    html, body, [class*="css"] {{
         font-family: 'Futura Medium', 'Futura Md BT', 'Futura', sans-serif;
-    }
-    .main-header {
+    }}
+    .main-header {{
         font-size: 2.5rem;
         font-weight: 700;
-        color: #1f77b4;
+        color: {SHELL_RED};
         margin-bottom: 0.5rem;
         font-family: 'Futura Medium', 'Futura', sans-serif;
-    }
-    .sub-header {
+    }}
+    .sub-header {{
         font-size: 1.2rem;
-        color: #666;
+        color: #555;
         margin-bottom: 2rem;
         font-family: 'Futura Medium', 'Futura', sans-serif;
-    }
-    .result-box {
-        background-color: #f0f2f6;
+    }}
+    .result-box {{
+        background-color: #FFF8E1;
         padding: 1rem;
         border-radius: 0.5rem;
-        border-left: 4px solid #1f77b4;
+        border-left: 4px solid {SHELL_RED};
         margin: 1rem 0;
-    }
-    .stTabs [data-baseweb="tab-list"] {
+    }}
+    .stTabs [data-baseweb="tab-list"] {{
         gap: 2rem;
-    }
+    }}
+    .shell-banner {{
+        background: linear-gradient(135deg, {SHELL_RED} 0%, #C41017 100%);
+        padding: 1.2rem 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }}
+    .shell-banner h1 {{
+        color: white;
+        margin: 0;
+        font-size: 2rem;
+        font-family: 'Futura Medium', 'Futura', sans-serif;
+    }}
+    .shell-banner p {{
+        color: {SHELL_YELLOW};
+        margin: 0;
+        font-size: 1.1rem;
+        font-family: 'Futura Medium', 'Futura', sans-serif;
+    }}
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {{
+        background-color: #FFFEF5;
+    }}
+    [data-testid="stSidebar"] hr {{
+        border-color: {SHELL_YELLOW};
+    }}
     </style>
     """, unsafe_allow_html=True)
 
 
-# Global Plotly theme
-PLOT_FONT = dict(family="Futura Medium, Futura, sans-serif", size=12, color="#333")
+# Global Plotly theme — Shell palette
+PLOT_FONT = dict(family="Futura Medium, Futura, sans-serif", size=12, color=SHELL_DARK)
+SHELL_LINE_COLORS = [SHELL_RED, "#FBCE07", "#009639", "#003DA5", "#6D2077",
+                     "#E87722", "#00A3E0", "#8B8B8D", "#B5121B", "#6B4C00"]
 AXIS_STYLE = dict(
-    showgrid=True, gridcolor="#ddd", gridwidth=1,
-    ticks="outside", ticklen=5, tickwidth=1.5, tickcolor="#333",
-    showline=True, linecolor="#333", linewidth=1.5, mirror="allticks",
+    showgrid=True, gridcolor="#e0e0e0", gridwidth=1,
+    ticks="outside", ticklen=5, tickwidth=1.5, tickcolor=SHELL_DARK,
+    showline=True, linecolor=SHELL_DARK, linewidth=1.5, mirror="allticks",
     title_font=dict(size=13),
 )
 LAYOUT_STYLE = dict(
@@ -847,8 +881,14 @@ def main():
     """Main application entry point."""
     
     # Header
-    st.markdown('<div class="main-header">⛽ Gas PVT Analysis Tool</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sub-header">Industry-standard correlations for reservoir engineering calculations</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="shell-banner">
+        <div>
+            <h1>🐚 Gas PVT Analysis Tool</h1>
+            <p>Industry-standard correlations for reservoir engineering</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Sidebar unit selection
     st.sidebar.title("⚙️ Unit Settings")
@@ -920,8 +960,9 @@ def main():
         "- **Viscosity**: Lucas with Standing correction\n"
         "- **Critical Properties**: Sutton, Riazi-Daubert\n"
         "- **Water Properties**: McCain, Whitson-Brule\n\n"
-        "Based on SPE Monograph Vol. 20 by Whitson & Brule"
+        "Based on SPE Monograph Vol. 20 by Whitson & Brulé"
     )
+    st.sidebar.caption("Built with Shell engineering standards")
 
 
 def single_point_calculator():
@@ -1196,14 +1237,14 @@ def pressure_profile():
                 # Pressure plot
                 fig.add_trace(
                     go.Scatter(x=pressures, y=depths, mode='lines', name='Pressure',
-                              line=dict(color='#1f77b4', width=2.5)),
+                              line=dict(color=SHELL_RED, width=2.5)),
                     row=1, col=1
                 )
                 
                 # Z-factor plot
                 fig.add_trace(
                     go.Scatter(x=z_factors, y=depths, mode='lines', name='Z-factor',
-                              line=dict(color='#ff7f0e', width=2.5)),
+                              line=dict(color=SHELL_YELLOW, width=2.5)),
                     row=1, col=2
                 )
                 
@@ -1213,7 +1254,7 @@ def pressure_profile():
                 fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=1)
                 fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=2)
                 
-                fig.update_layout(height=600, showlegend=False, **LAYOUT_STYLE)
+                fig.update_layout(height=450, showlegend=False, **LAYOUT_STYLE)
                 for ann in fig.layout.annotations:
                     ann.y = ann.y + 0.04
                     ann.font = dict(size=14, family="Futura Medium, Futura, sans-serif", color="#333")
@@ -1340,8 +1381,7 @@ def complete_pvt_table():
                 all_results = []
                 
                 # Color palette for different temperatures
-                colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', 
-                         '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+                colors = SHELL_LINE_COLORS
                 
                 # Assume TDS for water calculations
                 tds = 0.0  # ppm, fresh water
@@ -1550,7 +1590,7 @@ def complete_pvt_table():
                 fig.update_yaxes(title_text="psi/ft", row=2, col=2)
                 fig.update_yaxes(title_text="psia²/cP", row=2, col=3)
                 
-                fig.update_layout(height=1000, showlegend=len(all_results) > 1,
+                fig.update_layout(height=750, showlegend=len(all_results) > 1,
                                   **LAYOUT_STYLE)
                 # Shift subplot titles up so they don't overlap borders
                 for ann in fig.layout.annotations:
