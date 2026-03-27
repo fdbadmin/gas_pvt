@@ -1095,7 +1095,6 @@ def single_point_calculator():
                     cg_unit = "1/bar"
                 
                 # Display results
-                st.markdown('<div class="result-box">', unsafe_allow_html=True)
                 
                 # Create results dataframe
                 results_df = pd.DataFrame({
@@ -1132,7 +1131,6 @@ def single_point_calculator():
                 })
                 
                 st.dataframe(results_df, use_container_width=True, hide_index=True)
-                st.markdown('</div>', unsafe_allow_html=True)
                 
                 # Automatic interpretation and flagging
                 st.markdown("---")
@@ -1711,8 +1709,6 @@ def water_gas_properties():
                 cw = c_wtr(pressure, temperature, tds, psc, tsc)
                 
                 # Display results
-                st.markdown('<div class="result-box">', unsafe_allow_html=True)
-                
                 results_df = pd.DataFrame({
                     "Property": [
                         "Water Content in Gas",
@@ -1738,7 +1734,6 @@ def water_gas_properties():
                 })
                 
                 st.dataframe(results_df, use_container_width=True, hide_index=True)
-                st.markdown('</div>', unsafe_allow_html=True)
                 
                 # Automated interpretation
                 st.markdown("---")
