@@ -453,7 +453,12 @@ st.markdown(f"""
         margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 1.2rem;
+    }}
+    .shell-banner img {{
+        height: 64px;
+        width: auto;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }}
     .shell-banner h1 {{
         color: white;
@@ -480,6 +485,7 @@ st.markdown(f"""
 
 # Global Plotly theme — Shell palette
 PLOT_FONT = dict(family="Futura Medium, Futura, sans-serif", size=12, color=SHELL_DARK)
+SHELL_PECTEN_URL = "https://upload.wikimedia.org/wikipedia/en/thumb/e/e8/Shell_logo.svg/200px-Shell_logo.svg.png"
 SHELL_LINE_COLORS = [SHELL_RED, "#FBCE07", "#009639", "#003DA5", "#6D2077",
                      "#E87722", "#00A3E0", "#8B8B8D", "#B5121B", "#6B4C00"]
 AXIS_STYLE = dict(
@@ -881,14 +887,23 @@ def main():
     """Main application entry point."""
     
     # Header
-    st.markdown("""
+    st.markdown(f"""
     <div class="shell-banner">
+        <img src="{SHELL_PECTEN_URL}" alt="Shell">
         <div>
-            <h1>🐚 Gas PVT Analysis Tool</h1>
+            <h1>Gas PVT Analysis Tool</h1>
             <p>Industry-standard correlations for reservoir engineering</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Sidebar logo
+    st.sidebar.markdown(
+        f'<div style="text-align:center;margin-bottom:1rem;">'
+        f'<img src="{SHELL_PECTEN_URL}" width="100">'
+        f'</div>',
+        unsafe_allow_html=True
+    )
     
     # Sidebar unit selection
     st.sidebar.title("⚙️ Unit Settings")
