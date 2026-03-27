@@ -1188,8 +1188,8 @@ def pressure_profile():
                 # Update axes
                 fig.update_xaxes(title_text="Pressure (psia)", row=1, col=1)
                 fig.update_xaxes(title_text="Z-factor", row=1, col=2)
-                fig.update_yaxes(title_text="Depth (ft)", row=1, col=1)
-                fig.update_yaxes(title_text="Depth (ft)", row=1, col=2)
+                fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=1)
+                fig.update_yaxes(title_text="Depth (ft)", autorange="reversed", row=1, col=2)
                 
                 fig.update_layout(height=600, showlegend=False)
                 
