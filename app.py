@@ -405,84 +405,10 @@ def display_interpretation_flags(flags, severity):
                 st.markdown(item)
 
 
-# Page configuration
-st.set_page_config(
-    page_title="Shell Gas PVT Analysis",
-    page_icon="🐚",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
-# Custom CSS
+# Shell branding constants
 SHELL_RED = "#DD1D21"
 SHELL_YELLOW = "#FBCE07"
 SHELL_DARK = "#333333"
-
-st.markdown(f"""
-    <style>
-    @import url('https://fonts.cdnfonts.com/css/futura-md-bt');
-    html, body, [class*="css"] {{
-        font-family: 'Futura Medium', 'Futura Md BT', 'Futura', sans-serif;
-    }}
-    .main-header {{
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: {SHELL_RED};
-        margin-bottom: 0.5rem;
-        font-family: 'Futura Medium', 'Futura', sans-serif;
-    }}
-    .sub-header {{
-        font-size: 1.2rem;
-        color: #555;
-        margin-bottom: 2rem;
-        font-family: 'Futura Medium', 'Futura', sans-serif;
-    }}
-    .result-box {{
-        background-color: #FFF8E1;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid {SHELL_RED};
-        margin: 1rem 0;
-    }}
-    .stTabs [data-baseweb="tab-list"] {{
-        gap: 2rem;
-    }}
-    .shell-banner {{
-        background: linear-gradient(135deg, {SHELL_RED} 0%, #C41017 100%);
-        padding: 1.2rem 1.5rem;
-        border-radius: 0.5rem;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 1.2rem;
-    }}
-    .shell-banner img {{
-        height: 64px;
-        width: auto;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }}
-    .shell-banner h1 {{
-        color: white;
-        margin: 0;
-        font-size: 2rem;
-        font-family: 'Futura Medium', 'Futura', sans-serif;
-    }}
-    .shell-banner p {{
-        color: {SHELL_YELLOW};
-        margin: 0;
-        font-size: 1.1rem;
-        font-family: 'Futura Medium', 'Futura', sans-serif;
-    }}
-    /* Sidebar styling */
-    [data-testid="stSidebar"] {{
-        background-color: #FFFEF5;
-    }}
-    [data-testid="stSidebar"] hr {{
-        border-color: {SHELL_YELLOW};
-    }}
-    </style>
-    """, unsafe_allow_html=True)
-
 
 # Global Plotly theme — Shell palette
 PLOT_FONT = dict(family="Futura Medium, Futura, sans-serif", size=12, color=SHELL_DARK)
@@ -884,9 +810,85 @@ def user_guide_and_background():
     """)
 
 
+# CSS block used by both this app and importers
+SHELL_CSS = f"""
+    <style>
+    @import url('https://fonts.cdnfonts.com/css/futura-md-bt');
+    html, body, [class*="css"] {{
+        font-family: 'Futura Medium', 'Futura Md BT', 'Futura', sans-serif;
+    }}
+    .main-header {{
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: {SHELL_RED};
+        margin-bottom: 0.5rem;
+        font-family: 'Futura Medium', 'Futura', sans-serif;
+    }}
+    .sub-header {{
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 2rem;
+        font-family: 'Futura Medium', 'Futura', sans-serif;
+    }}
+    .result-box {{
+        background-color: #FFF8E1;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid {SHELL_RED};
+        margin: 1rem 0;
+    }}
+    .stTabs [data-baseweb="tab-list"] {{
+        gap: 2rem;
+    }}
+    .shell-banner {{
+        background: linear-gradient(135deg, {SHELL_RED} 0%, #C41017 100%);
+        padding: 1.2rem 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }}
+    .shell-banner img {{
+        height: 64px;
+        width: auto;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }}
+    .shell-banner h1 {{
+        color: white;
+        margin: 0;
+        font-size: 2rem;
+        font-family: 'Futura Medium', 'Futura', sans-serif;
+    }}
+    .shell-banner p {{
+        color: {SHELL_YELLOW};
+        margin: 0;
+        font-size: 1.1rem;
+        font-family: 'Futura Medium', 'Futura', sans-serif;
+    }}
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {{
+        background-color: #FFFEF5;
+    }}
+    [data-testid="stSidebar"] hr {{
+        border-color: {SHELL_YELLOW};
+    }}
+    </style>
+    """
+
+
 def main():
     """Main application entry point."""
-    
+
+    # Page configuration & styling
+    st.set_page_config(
+        page_title="Shell Gas PVT Analysis",
+        page_icon="🐚",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
+    st.markdown(SHELL_CSS, unsafe_allow_html=True)
+
     # Header
     st.markdown(f"""
     <div class="shell-banner">

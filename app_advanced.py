@@ -28,6 +28,20 @@ from hydrate_prediction import (
     hammerschmidt_concentration, inhibitor_rate
 )
 
+# Import base pages and shared constants from core app
+import app as _core
+from app import (
+    user_guide_and_background,
+    single_point_calculator,
+    pressure_profile,
+    complete_pvt_table,
+    water_gas_properties,
+    critical_properties,
+    uncertainty_analysis,
+    SHELL_RED, SHELL_YELLOW, SHELL_DARK, SHELL_CSS,
+    PLOT_FONT, SHELL_PECTEN_URL, SHELL_LINE_COLORS, AXIS_STYLE, LAYOUT_STYLE,
+)
+
 
 # ============================================================================
 #  UNIT CONVERSION (same as core app)
@@ -112,78 +126,7 @@ def convert_temperature_from_fahrenheit(temp, unit):
     return temp
 
 
-# ============================================================================
-#  PAGE CONFIGURATION & SHELL STYLING
-# ============================================================================
-
-st.set_page_config(
-    page_title="Shell Gas PVT — Advanced Analysis",
-    page_icon="🔬",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
-
-SHELL_RED = "#DD1D21"
-SHELL_YELLOW = "#FBCE07"
-SHELL_DARK = "#333333"
-
-st.markdown(f"""
-    <style>
-    @import url('https://fonts.cdnfonts.com/css/futura-md-bt');
-    html, body, [class*="css"] {{
-        font-family: 'Futura Medium', 'Futura Md BT', 'Futura', sans-serif;
-    }}
-    .shell-banner {{
-        background: linear-gradient(135deg, {SHELL_RED} 0%, #C41017 100%);
-        padding: 1.2rem 1.5rem;
-        border-radius: 0.5rem;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 1.2rem;
-    }}
-    .shell-banner img {{
-        height: 64px;
-        width: auto;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    }}
-    .shell-banner h1 {{
-        color: white;
-        margin: 0;
-        font-size: 2rem;
-        font-family: 'Futura Medium', 'Futura', sans-serif;
-    }}
-    .shell-banner p {{
-        color: {SHELL_YELLOW};
-        margin: 0;
-        font-size: 1.1rem;
-        font-family: 'Futura Medium', 'Futura', sans-serif;
-    }}
-    [data-testid="stSidebar"] {{
-        background-color: #FFFEF5;
-    }}
-    [data-testid="stSidebar"] hr {{
-        border-color: {SHELL_YELLOW};
-    }}
-    </style>
-    """, unsafe_allow_html=True)
-
-PLOT_FONT = dict(family="Futura Medium, Futura, sans-serif", size=12, color=SHELL_DARK)
-SHELL_PECTEN_URL = "https://upload.wikimedia.org/wikipedia/en/thumb/e/e8/Shell_logo.svg/200px-Shell_logo.svg.png"
-SHELL_LINE_COLORS = [SHELL_RED, "#FBCE07", "#009639", "#003DA5", "#6D2077",
-                     "#E87722", "#00A3E0", "#8B8B8D", "#B5121B", "#6B4C00"]
-AXIS_STYLE = dict(
-    showgrid=True, gridcolor="#e0e0e0", gridwidth=1,
-    ticks="outside", ticklen=5, tickwidth=1.5, tickcolor=SHELL_DARK,
-    showline=True, linecolor=SHELL_DARK, linewidth=1.5, mirror="allticks",
-    title_font=dict(size=13),
-)
-LAYOUT_STYLE = dict(
-    font=PLOT_FONT,
-    plot_bgcolor="white",
-    paper_bgcolor="white",
-    margin=dict(t=60, b=10),
-)
+# Constants and styling imported from app module above
 
 
 # ============================================================================
@@ -818,13 +761,22 @@ def batch_upload_page():
 # ============================================================================
 
 def main():
+    # Page configuration & styling
+    st.set_page_config(
+        page_title="Shell Gas PVT — Complete Analysis",
+        page_icon="🔬",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
+    st.markdown(SHELL_CSS, unsafe_allow_html=True)
+
     # Header
     st.markdown(f"""
     <div class="shell-banner">
         <img src="{SHELL_PECTEN_URL}" alt="Shell">
         <div>
-            <h1>Gas PVT — Advanced Analysis</h1>
-            <p>Material balance, wellbore hydraulics, gas quality & more</p>
+            <h1>Gas PVT — Complete Analysis</h1>
+            <p>Core PVT calculations + advanced engineering workflows</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -851,25 +803,42 @@ def main():
     )
 
     st.sidebar.markdown("---")
-    st.sidebar.title("🔬 Analysis Type")
+    st.sidebar.title("📊 Analysis Type")
 
     analysis_type = st.sidebar.radio(
         "Select Analysis:",
         [
+            "📚 User Guide & Background",
+            "Single Point Calculator",
+            "Pressure Profile",
+            "Complete PVT Table",
+            "Water-Gas Properties",
+            "Critical Properties",
+            "Uncertainty Analysis",
+            "---",
             "Z-factor Comparison",
             "Gas Quality / Wobbe",
             "Dew Point Estimation",
-            "---",
+            "---- ",
             "OGIP / P÷Z Material Balance",
             "Wellbore Pressure Traverse",
             "Hydrate Prediction",
-            "--- ",
+            "----- ",
             "Batch Upload (CSV/Excel)",
         ],
         label_visibility="collapsed",
     )
 
     page_map = {
+        # Core pages (from app.py)
+        "📚 User Guide & Background": user_guide_and_background,
+        "Single Point Calculator": single_point_calculator,
+        "Pressure Profile": pressure_profile,
+        "Complete PVT Table": complete_pvt_table,
+        "Water-Gas Properties": water_gas_properties,
+        "Critical Properties": critical_properties,
+        "Uncertainty Analysis": uncertainty_analysis,
+        # Advanced pages
         "Z-factor Comparison": zfactor_comparison,
         "Gas Quality / Wobbe": gas_quality_page,
         "Dew Point Estimation": dew_point_page,
@@ -886,20 +855,15 @@ def main():
     st.sidebar.markdown("---")
     st.sidebar.markdown("### About")
     st.sidebar.info(
-        "Advanced engineering workflows for gas reservoir analysis:\n\n"
-        "- **Z-factor**: HY, DAK, Piper-McCain-Corredor comparison\n"
-        "- **Material Balance**: P/Z decline, Havlena-Odeh\n"
-        "- **Wellbore**: Cullender-Smith traverse\n"
-        "- **Hydrate**: Katz + Hammerschmidt inhibitor dosing\n"
-        "- **Gas Quality**: Heating value, Wobbe Index\n\n"
+        "Complete gas PVT analysis toolkit:\n\n"
+        "**Core:** Z-factor (HY), viscosity, Bg, compressibility, "
+        "water content, critical properties, uncertainty\n\n"
+        "**Advanced:** Z-factor comparison (HY/DAK/PMC), "
+        "material balance, Cullender-Smith traverse, "
+        "hydrate prediction, gas quality/Wobbe, batch processing\n\n"
         "Based on SPE Monograph Vol. 20 by Whitson & Brulé"
     )
     st.sidebar.caption("Built with Shell engineering standards")
-
-    st.sidebar.markdown("---")
-    st.sidebar.markdown(
-        "📊 **[Core PVT App →](/)** for single-point, profiles & tables"
-    )
 
 
 if __name__ == "__main__":
