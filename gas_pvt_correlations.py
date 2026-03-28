@@ -645,39 +645,38 @@ def z_gas_dak(ppr: float, tpr: float) -> float:
         # No root in physical range — DAK is outside its validity envelope
         return float('nan')
 
-    # Brent-style bisection + Newton hybrid
-    rho_r = (rho_lo_b + rho_hi_b) / 2.0
-    f_lo = _residual(rho_lo_b)
-    for _ in range(300):
-        f_val = _residual(rho_r)
-        if abs(f_val) < 1e-13:
+    # Bisection with Newton acceleration
+    rho_a, rho_b = rho_lo_b, rho_hi_b
+    f_a = _residual(rho_a)
+
+    for _ in range(200):
+        if rho_b - rho_a < 1e-14:
             break
 
-        df_val = _derivative(rho_r)
-        if abs(df_val) > 1e-15:
-            rho_newton = rho_r - f_val / df_val
-        else:
-            rho_newton = rho_r
+        rho_mid = 0.5 * (rho_a + rho_b)
+        f_mid = _residual(rho_mid)
 
-        # Accept Newton step only if it stays within bracket
-        if rho_lo_b < rho_newton < rho_hi_b:
-            rho_new = rho_newton
-        else:
-            # Bisection fallback
-            rho_new = (rho_lo_b + rho_hi_b) / 2.0
+        if abs(f_mid) < 1e-13:
+            rho_a = rho_b = rho_mid
+            break
+
+        # Try Newton step from midpoint as acceleration
+        df = _derivative(rho_mid)
+        if abs(df) > 1e-15:
+            rho_n = rho_mid - f_mid / df
+            if rho_a < rho_n < rho_b:
+                f_n = _residual(rho_n)
+                if abs(f_n) < abs(f_mid):
+                    rho_mid, f_mid = rho_n, f_n
 
         # Tighten bracket
-        if f_lo * f_val <= 0:
-            rho_hi_b = rho_r
+        if f_a * f_mid <= 0:
+            rho_b = rho_mid
         else:
-            rho_lo_b = rho_r
-            f_lo = f_val
+            rho_a = rho_mid
+            f_a = f_mid
 
-        if abs(rho_new - rho_r) < 1e-12:
-            rho_r = rho_new
-            break
-        rho_r = rho_new
-
+    rho_r = 0.5 * (rho_a + rho_b)
     z = 0.27 * ppr / (max(rho_r, 1e-15) * tpr)
     return z
 
