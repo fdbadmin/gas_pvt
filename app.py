@@ -894,7 +894,7 @@ def main():
     <div class="shell-banner">
         <img src="{SHELL_PECTEN_URL}" alt="Shell">
         <div>
-            <h1>Gas PVT Analysis Tool</h1>
+            <h1>Gas PVT Analysis Tool (Prototype)</h1>
             <p>Industry-standard correlations for reservoir engineering</p>
         </div>
     </div>
